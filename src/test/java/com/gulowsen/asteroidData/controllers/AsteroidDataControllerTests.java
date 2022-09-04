@@ -98,7 +98,7 @@ public class AsteroidDataControllerTests {
     }
 
     @Test
-    public void verifyLargestAsteroidRepositoryIsNotCalledWhenYearShouldBeUpdated() throws SQLException, FailedFetchingDataException, CustomParseException {
+    public void verifyLargestAsteroidRepositoryIsNotCalledWhenYearShouldBeUpdatedReturnsFalseAndForceUpdateIsFalse() throws SQLException, FailedFetchingDataException, CustomParseException {
         final AsteroidData asteroidData = testData.getAsteroidTestData().get(0);
         when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
         asteroidDataController.saveAsteroidDataForYear(2020, false);
@@ -107,7 +107,7 @@ public class AsteroidDataControllerTests {
     }
 
     @Test
-    public void testForceRefreshOverridesYearShouldBeUpdatedCheck() throws SQLException, FailedFetchingDataException, CustomParseException {
+    public void verifyLargestAsteroidRepositoryIsCalledWhenYearShouldBeUpdatedReturnsFalseAndForceUpdateIsTrue() throws SQLException, FailedFetchingDataException, CustomParseException {
         final AsteroidData asteroidData = testData.getAsteroidTestData().get(0);
         when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
         asteroidDataController.saveAsteroidDataForYear(2020, true);
