@@ -53,11 +53,11 @@ public class AsteroidDataController {
         return new NearbyResponse(getAsteroidDataForCloseApproaches(closeApproachesInDateRange.stream().limit(maxHits).collect(Collectors.toList())));
     }
 
-    public void saveAsteroidDataForYear(int year) throws FailedFetchingDataException, CustomParseException, SQLException {
-        AsteroidData currentLargest = largestAsteroidRepository.getLargestAsteroidByYear(year);
-        List<LocalDate> allStartOfWeekDaysInYear = DateAndTimeHelper.getEveryStartOfWeekDateInYear(year);
-        for (LocalDate date : allStartOfWeekDaysInYear) {
-            if(yearShouldBeUpdated(year)) {
+    public void saveAsteroidDataForYear(int year, boolean forceUpdate) throws FailedFetchingDataException, CustomParseException, SQLException {
+        if(forceUpdate || yearShouldBeUpdated(year)) {
+            AsteroidData currentLargest = largestAsteroidRepository.getLargestAsteroidByYear(year);
+            List<LocalDate> allStartOfWeekDaysInYear = DateAndTimeHelper.getEveryStartOfWeekDateInYear(year);
+            for (LocalDate date : allStartOfWeekDaysInYear) {
                 List<AsteroidData> asteroidDataList = neoWsService.fetchNearbyAsteroidsForDateRange(date, DateAndTimeHelper.calculateEndDateWithinYear(date,6));
                 for (AsteroidData asteroidData : asteroidDataList) {
                     if(asteroidData.getDiamMax() > currentLargest.getDiamMax())
@@ -65,8 +65,8 @@ public class AsteroidDataController {
                 }
                 persistAsteroidList(asteroidDataList);
             }
+            largestAsteroidRepository.save(currentLargest, year);
         }
-        largestAsteroidRepository.save(currentLargest, year);
     }
 
     public AsteroidData findLargestAsteroidByYear(int year) throws SQLException, YearNotYetIndexedException {
@@ -111,7 +111,7 @@ public class AsteroidDataController {
         return true;
     }
 
-    private void persistAsteroidList(List<AsteroidData> asteroidData) throws SQLException {
+    protected void persistAsteroidList(List<AsteroidData> asteroidData) throws SQLException {
         for (AsteroidData asteroid : asteroidData) {
             if(!asteroidExists(asteroid)) {
                 asteroidDataRepository.save(asteroid);
@@ -119,7 +119,7 @@ public class AsteroidDataController {
         }
     }
 
-    private void persistCloseApproachDataList(List<AsteroidData> asteroidData) throws SQLException {
+    protected void persistCloseApproachDataList(List<AsteroidData> asteroidData) throws SQLException {
         for (AsteroidData asteroid : asteroidData) {
             for(CloseApproachData closeApproachData : asteroid.getCloseApproachDataList()) {
                 if(!closeApproachDataExists(closeApproachData)) {

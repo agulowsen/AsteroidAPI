@@ -25,7 +25,6 @@ public class AsteroidDataImporterTask {
     @Value("${import.startyear}")
     private int currentYear;
 
-
     AsteroidDataController asteroidDataController;
 
     public AsteroidDataImporterTask() {
@@ -39,12 +38,11 @@ public class AsteroidDataImporterTask {
             int yearToImport = currentYear;
             System.out.println("Importing asteroid data for " + yearToImport);
             currentYear++;
-            asteroidDataController.saveAsteroidDataForYear(yearToImport);
+            asteroidDataController.saveAsteroidDataForYear(yearToImport, false);
             System.out.println("Done importing asteroid data for " + yearToImport);
         }else {
             currentYear = startYear;
         }
-
     }
 
     @Autowired

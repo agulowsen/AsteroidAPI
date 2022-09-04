@@ -68,7 +68,6 @@ public class ErrorController {
     @ExceptionHandler({CustomParseException.class})
     public ResponseEntity<APIError> handleParseException(CustomParseException e) {
         e.printStackTrace();
-        System.out.println(e.getMessage());
         return new ResponseEntity<>(
                 new APIError(
                         HttpStatus.INTERNAL_SERVER_ERROR,

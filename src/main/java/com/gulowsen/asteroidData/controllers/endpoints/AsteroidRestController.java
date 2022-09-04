@@ -57,8 +57,10 @@ public class AsteroidRestController {
     @ApiOperation(value = "Import asteroid data",
             notes = "Imports asteroid data for given year")
     @PostMapping(IMPORT_ASTEROID_DATA_BY_YEAR_ENDPOINT)
-    public void importAsteroidData(@RequestParam("year") @ApiParam(example="2022") int year) throws CustomParseException, FailedFetchingDataException, SQLException {
-        asteroidDataController.saveAsteroidDataForYear(year);
+    public void importAsteroidData(@RequestParam("year") @ApiParam(example="2022") int year,
+                                   @RequestParam(value="forceUpdate", required=false) Boolean forceUpdate) throws CustomParseException, FailedFetchingDataException, SQLException {
+        if(forceUpdate == null) forceUpdate = false;
+        asteroidDataController.saveAsteroidDataForYear(year, forceUpdate);
     }
 
     @Autowired

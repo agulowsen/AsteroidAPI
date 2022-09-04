@@ -2,10 +2,14 @@ package com.gulowsen.asteroidData.controllers;
 
 
 import com.gulowsen.asteroidData.TestData;
+import com.gulowsen.asteroidData.errorhandling.CustomParseException;
 import com.gulowsen.asteroidData.errorhandling.DateRangeTooBigException;
-import com.gulowsen.asteroidData.services.NeoWsService;
+import com.gulowsen.asteroidData.errorhandling.FailedFetchingDataException;
+import com.gulowsen.asteroidData.models.AsteroidData;
 import com.gulowsen.asteroidData.repository.implementations.mysql.AsteroidDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachDataRepositoryImpl;
+import com.gulowsen.asteroidData.repository.interfaces.LargestAsteroidRepository;
+import com.gulowsen.asteroidData.services.NeoWsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +27,8 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +41,10 @@ public class AsteroidDataControllerTests {
     @Mock
     CloseApproachDataRepositoryImpl closeApproachDataRepository;
     @Mock
+    LargestAsteroidRepository largestAsteroidRepository;
+    @Mock
     NeoWsService neoWsService;
+
 
     @InjectMocks
     AsteroidDataController asteroidDataController;
@@ -65,6 +74,22 @@ public class AsteroidDataControllerTests {
                 () -> asteroidDataController.validateNearbyRequest(testData.getNearbyRequest(LocalDate.of(2020,1,1), LocalDate.of(2020,1,8)))
         );
         assertEquals("Date range is too long. Only supports query for upto 7 days", exception.getMessage());
+    }
+
+    @Test
+    public void testExistingEntryFailsYearShouldBeUpdatedCheck() throws SQLException, FailedFetchingDataException, CustomParseException {
+        final AsteroidData asteroidData = testData.getAsteroidTestData().get(0);
+        when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
+        asteroidDataController.saveAsteroidDataForYear(2020, false);
+        verify(largestAsteroidRepository, times(0)).save(asteroidData, 2020);
+    }
+
+    @Test
+    public void testForceRefreshOverridesYearShouldBeUpdatedCheck() throws SQLException, FailedFetchingDataException, CustomParseException {
+        final AsteroidData asteroidData = testData.getAsteroidTestData().get(0);
+        when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
+        asteroidDataController.saveAsteroidDataForYear(2020, true);
+        verify(largestAsteroidRepository).save(asteroidData, 2020);
     }
 
 
