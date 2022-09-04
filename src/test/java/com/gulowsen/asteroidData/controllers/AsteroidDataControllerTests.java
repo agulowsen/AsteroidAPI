@@ -9,7 +9,8 @@ import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachD
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -28,11 +29,15 @@ public class AsteroidDataControllerTests {
 
     TestData testData = new TestData();
 
-    AsteroidDataRepositoryImpl asteroidDataRepository = Mockito.mock(AsteroidDataRepositoryImpl.class);
-    CloseApproachDataRepositoryImpl closeApproachDataRepository = Mockito.mock(CloseApproachDataRepositoryImpl.class);
-    NeoWsRepository neoWsRepository = Mockito.mock(NeoWsRepository.class);
+    @Mock
+    AsteroidDataRepositoryImpl asteroidDataRepository;
+    @Mock
+    CloseApproachDataRepositoryImpl closeApproachDataRepository;
+    @Mock
+    NeoWsRepository neoWsRepository;
 
-    AsteroidDataController asteroidDataController = new AsteroidDataController(asteroidDataRepository, closeApproachDataRepository, neoWsRepository);
+    @InjectMocks
+    AsteroidDataController asteroidDataController;
 
 
     @BeforeEach

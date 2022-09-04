@@ -40,13 +40,6 @@ public class AsteroidDataController {
     private NeoWsRepository neoWsRepository;
     private LargestAsteroidRepository largestAsteroidRepository;
 
-
-    protected AsteroidDataController(AsteroidDataRepositoryImpl asteroidRepo, CloseApproachDataRepositoryImpl closeApproachRepo, NeoWsRepository neoWSRepo) {
-        this.asteroidDataRepository = asteroidRepo;
-        this.closeApproachDataRepository = closeApproachRepo;
-        this.neoWsRepository = neoWSRepo;
-    }
-
     public NearbyResponse findNearbyInTimeFrame(NearbyRequest nearbyRequest) throws SQLException, FailedFetchingDataException, CustomParseException, DateRangeTooBigException {
         validateNearbyRequest(nearbyRequest);
         if(!eachDateHasDatabaseEntry(DateAndTimeHelper.getAllDatesInRange(nearbyRequest.getFrom(), nearbyRequest.getUntil()))) {
