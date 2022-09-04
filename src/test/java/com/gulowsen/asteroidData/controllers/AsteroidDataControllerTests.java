@@ -3,7 +3,7 @@ package com.gulowsen.asteroidData.controllers;
 
 import com.gulowsen.asteroidData.TestData;
 import com.gulowsen.asteroidData.errorhandling.DateRangeTooBigException;
-import com.gulowsen.asteroidData.repository.implementations.NeoWsRepository;
+import com.gulowsen.asteroidData.services.NeoWsService;
 import com.gulowsen.asteroidData.repository.implementations.mysql.AsteroidDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachDataRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +35,7 @@ public class AsteroidDataControllerTests {
     @Mock
     CloseApproachDataRepositoryImpl closeApproachDataRepository;
     @Mock
-    NeoWsRepository neoWsRepository;
+    NeoWsService neoWsService;
 
     @InjectMocks
     AsteroidDataController asteroidDataController;

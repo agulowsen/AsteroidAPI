@@ -8,7 +8,7 @@ import com.gulowsen.asteroidData.models.AsteroidData;
 import com.gulowsen.asteroidData.models.CloseApproachData;
 import com.gulowsen.asteroidData.models.NearbyRequest;
 import com.gulowsen.asteroidData.models.NearbyResponse;
-import com.gulowsen.asteroidData.repository.implementations.NeoWsRepository;
+import com.gulowsen.asteroidData.services.NeoWsService;
 import com.gulowsen.asteroidData.repository.implementations.mysql.AsteroidDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.interfaces.LargestAsteroidRepository;
@@ -37,13 +37,13 @@ public class AsteroidDataController {
 
     private AsteroidDataRepositoryImpl asteroidDataRepository;
     private CloseApproachDataRepositoryImpl closeApproachDataRepository;
-    private NeoWsRepository neoWsRepository;
+    private NeoWsService neoWsService;
     private LargestAsteroidRepository largestAsteroidRepository;
 
     public NearbyResponse findNearbyInTimeFrame(NearbyRequest nearbyRequest) throws SQLException, FailedFetchingDataException, CustomParseException, DateRangeTooBigException {
         validateNearbyRequest(nearbyRequest);
         if(!eachDateHasDatabaseEntry(DateAndTimeHelper.getAllDatesInRange(nearbyRequest.getFrom(), nearbyRequest.getUntil()))) {
-            List<AsteroidData> asteroidData = neoWsRepository.fetchNearbyAsteroidsForDateRange(nearbyRequest.getFrom(), nearbyRequest.getUntil());
+            List<AsteroidData> asteroidData = neoWsService.fetchNearbyAsteroidsForDateRange(nearbyRequest.getFrom(), nearbyRequest.getUntil());
             persistAsteroidList(asteroidData);
             persistCloseApproachDataList(asteroidData);
         }
@@ -58,7 +58,7 @@ public class AsteroidDataController {
         List<LocalDate> allStartOfWeekDaysInYear = DateAndTimeHelper.getEveryStartOfWeekDateInYear(year);
         for (LocalDate date : allStartOfWeekDaysInYear) {
             if(yearShouldBeUpdated(year)) {
-                List<AsteroidData> asteroidDataList = neoWsRepository.fetchNearbyAsteroidsForDateRange(date, DateAndTimeHelper.calculateEndDateWithinYear(date,6));
+                List<AsteroidData> asteroidDataList = neoWsService.fetchNearbyAsteroidsForDateRange(date, DateAndTimeHelper.calculateEndDateWithinYear(date,6));
                 for (AsteroidData asteroidData : asteroidDataList) {
                     if(asteroidData.getDiamMax() > currentLargest.getDiamMax())
                         currentLargest = asteroidData;
@@ -147,8 +147,8 @@ public class AsteroidDataController {
         this.closeApproachDataRepository = closeApproachDataRepository;
     }
     @Autowired
-    public void setNeoWsRepository(NeoWsRepository neoWsRepository) {
-        this.neoWsRepository = neoWsRepository;
+    public void setNeoWsRepository(NeoWsService neoWsService) {
+        this.neoWsService = neoWsService;
     }
 
     @Autowired

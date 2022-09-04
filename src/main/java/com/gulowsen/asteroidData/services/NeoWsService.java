@@ -1,4 +1,4 @@
-package com.gulowsen.asteroidData.repository.implementations;
+package com.gulowsen.asteroidData.services;
 
 import com.gulowsen.asteroidData.errorhandling.CustomParseException;
 import com.gulowsen.asteroidData.errorhandling.FailedFetchingDataException;
@@ -6,17 +6,17 @@ import com.gulowsen.asteroidData.models.AsteroidData;
 import com.gulowsen.asteroidData.utils.ExternalAPIHelper;
 import com.gulowsen.asteroidData.utils.JSONHelper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
-public class NeoWsRepository {
+@Service
+public class NeoWsService {
 
     private final String NEO_TOKEN = System.getenv("NEO_API_TOKEN");
     @Value("${neows.endpoint}")
-    private final String NEO_API_ENDPOINT = "https://api.nasa.gov/neo/rest/v1/feed";
+    private String NEO_API_ENDPOINT;
     private final String NEO_API_START_PARAM = "start_date";
     private final String NEO_API_END_PARAM = "end_date";
     private final String NEO_API_TOKEN_PARAM = "api_key";
