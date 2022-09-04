@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -63,7 +64,7 @@ public class AsteroidDataControllerTests {
              DateRangeTooBigException.class,
                 () -> asteroidDataController.validateNearbyRequest(testData.getNearbyRequest(LocalDate.of(2020,1,1), LocalDate.of(2020,1,8)))
         );
-        assertTrue(exception.getMessage().equals("Date range is too long. Only supports query for upto 7 days"));
+        assertEquals("Date range is too long. Only supports query for upto 7 days", exception.getMessage());
     }
 
 
