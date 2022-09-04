@@ -48,4 +48,8 @@ public class TestData {
         nearbyRequest.setUntil(until);
         return nearbyRequest;
     }
+
+    public AsteroidData getEmptyAsteroidData() {
+        return new AsteroidData();
+    }
 }

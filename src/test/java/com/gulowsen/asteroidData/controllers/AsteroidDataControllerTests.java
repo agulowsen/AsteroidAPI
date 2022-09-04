@@ -25,8 +25,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -77,11 +80,30 @@ public class AsteroidDataControllerTests {
     }
 
     @Test
-    public void testExistingEntryFailsYearShouldBeUpdatedCheck() throws SQLException, FailedFetchingDataException, CustomParseException {
+    public void testYearShouldBeUpdatedReturnsFalseWhenEntryExists() throws SQLException {
+        when(largestAsteroidRepository.getLargestAsteroidByYear(anyInt())).thenReturn(testData.getAsteroidTestData().get(0));
+        assertFalse(asteroidDataController.yearShouldBeUpdated(2002));
+    }
+
+    @Test
+    public void testYearShouldBeUpdatedReturnsTrueWhenEntryDoesNotExists() throws SQLException {
+        when(largestAsteroidRepository.getLargestAsteroidByYear(anyInt())).thenReturn(null);
+        assertTrue(asteroidDataController.yearShouldBeUpdated(2002));
+    }
+
+    @Test
+    public void testYearShouldBeUpdatedReturnsTrueWhenEntryHasNoId() throws SQLException {
+        when(largestAsteroidRepository.getLargestAsteroidByYear(anyInt())).thenReturn(testData.getEmptyAsteroidData());
+        assertTrue(asteroidDataController.yearShouldBeUpdated(2002));
+    }
+
+    @Test
+    public void verifyLargestAsteroidRepositoryIsNotCalledWhenYearShouldBeUpdatedReturnsFalse() throws SQLException, FailedFetchingDataException, CustomParseException {
         final AsteroidData asteroidData = testData.getAsteroidTestData().get(0);
         when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
         asteroidDataController.saveAsteroidDataForYear(2020, false);
         verify(largestAsteroidRepository, times(0)).save(asteroidData, 2020);
+        verify(neoWsService, times(0)).fetchNearbyAsteroidsForDateRange(any(), any());
     }
 
     @Test
@@ -90,6 +112,7 @@ public class AsteroidDataControllerTests {
         when(largestAsteroidRepository.getLargestAsteroidByYear(2020)).thenReturn(asteroidData);
         asteroidDataController.saveAsteroidDataForYear(2020, true);
         verify(largestAsteroidRepository).save(asteroidData, 2020);
+        verify(neoWsService, atLeastOnce()).fetchNearbyAsteroidsForDateRange(any(), any());
     }
 
 

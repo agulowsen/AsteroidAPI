@@ -78,9 +78,9 @@ public class AsteroidDataController {
     }
 
     // TODO: Also refresh old data
-    private boolean yearShouldBeUpdated(int year) throws SQLException {
+    protected boolean yearShouldBeUpdated(int year) throws SQLException {
         final AsteroidData largestAsteroidByYear = largestAsteroidRepository.getLargestAsteroidByYear(year);
-        return ObjectUtils.isEmpty(largestAsteroidByYear.getId());
+        return largestAsteroidByYear == null || ObjectUtils.isEmpty(largestAsteroidByYear.getId());
     }
 
     protected void validateNearbyRequest(NearbyRequest nearbyRequest) throws DateRangeTooBigException {
