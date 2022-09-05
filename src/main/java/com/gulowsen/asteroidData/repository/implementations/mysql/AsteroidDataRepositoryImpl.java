@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
 
 @Repository
-public class AsteroidDataMySQLRepositoryImpl extends BaseMySQLRepositoryImpl implements AsteroidDataRepository {
+public class AsteroidDataRepositoryImpl extends BaseRepositoryImpl implements AsteroidDataRepository {
 
     public void save(AsteroidData asteroidData) throws SQLException {
         Connection connection = DBCPDataSource.getConnection();

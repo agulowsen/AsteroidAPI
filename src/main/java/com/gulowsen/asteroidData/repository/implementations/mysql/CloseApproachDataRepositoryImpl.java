@@ -18,7 +18,7 @@ import java.util.List;
 import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
 
 @Repository
-public class CloseApproachDataMySQLRepositoryImpl extends BaseMySQLRepositoryImpl implements com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataMySQLRepositoryImpl {
+public class CloseApproachDataRepositoryImpl extends BaseRepositoryImpl implements com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataMySQLRepositoryImpl {
 
     public int findAmountForDate(LocalDate localDate) throws SQLException {
         Integer count = null;

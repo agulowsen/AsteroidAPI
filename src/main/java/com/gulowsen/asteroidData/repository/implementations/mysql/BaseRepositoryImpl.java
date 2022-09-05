@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class BaseMySQLRepositoryImpl implements BaseRepository {
+public abstract class BaseRepositoryImpl implements BaseRepository {
 
     public int queryCountOfElement(String schema, String clauseField, String stringMatch, Integer integerMatch) throws SQLException {
         Integer count = null;

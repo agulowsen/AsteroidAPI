@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
 
 @Repository
-public class LargestDataMySQLRepositoryImpl extends BaseMySQLRepositoryImpl implements LargestAsteroidRepository {
+public class LargestDataRepositoryImpl extends BaseRepositoryImpl implements LargestAsteroidRepository {
 
     public AsteroidData getLargestAsteroidByYear(int year) throws SQLException {
         AsteroidData asteroidData = new AsteroidData();
