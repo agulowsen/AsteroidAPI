@@ -2,7 +2,6 @@ package com.gulowsen.asteroidData.repository.implementations.mysql;
 
 import com.gulowsen.asteroidData.models.AsteroidData;
 import com.gulowsen.asteroidData.repository.interfaces.AsteroidDataRepository;
-import com.gulowsen.asteroidData.repository.BaseRepository;
 import com.gulowsen.asteroidData.utils.DBCPDataSource;
 import com.gulowsen.asteroidData.utils.DateAndTimeHelper;
 import org.springframework.stereotype.Repository;
@@ -13,8 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
+
 @Repository
-public class AsteroidDataRepositoryImpl extends BaseRepository implements AsteroidDataRepository {
+public class AsteroidDataRepositoryImpl extends BaseRepositoryImpl implements AsteroidDataRepository {
 
     public void save(AsteroidData asteroidData) throws SQLException {
         Connection connection = DBCPDataSource.getConnection();

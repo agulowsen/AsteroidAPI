@@ -1,5 +1,6 @@
 package com.gulowsen.asteroidData.controllers;
 
+import com.gulowsen.asteroidData.constants.mysql.DatabaseConstants;
 import com.gulowsen.asteroidData.errorhandling.CustomParseException;
 import com.gulowsen.asteroidData.errorhandling.DateRangeTooBigException;
 import com.gulowsen.asteroidData.errorhandling.FailedFetchingDataException;
@@ -8,10 +9,12 @@ import com.gulowsen.asteroidData.models.AsteroidData;
 import com.gulowsen.asteroidData.models.CloseApproachData;
 import com.gulowsen.asteroidData.models.NearbyRequest;
 import com.gulowsen.asteroidData.models.NearbyResponse;
-import com.gulowsen.asteroidData.services.NeoWsService;
 import com.gulowsen.asteroidData.repository.implementations.mysql.AsteroidDataRepositoryImpl;
-import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachDataRepositoryImpl;
+import com.gulowsen.asteroidData.repository.implementations.mysql.LargestDataRepositoryImpl;
+import com.gulowsen.asteroidData.repository.interfaces.AsteroidDataRepository;
+import com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataMySQLRepositoryImpl;
 import com.gulowsen.asteroidData.repository.interfaces.LargestAsteroidRepository;
+import com.gulowsen.asteroidData.services.NeoWsService;
 import com.gulowsen.asteroidData.utils.DateAndTimeHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,9 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.gulowsen.asteroidData.repository.BaseRepository.ASTEROID_DATA_FIELD_NAME;
-import static com.gulowsen.asteroidData.repository.BaseRepository.ASTEROID_DATA_SCHEMA;
-
 @Controller
 public class AsteroidDataController {
 
@@ -35,8 +35,8 @@ public class AsteroidDataController {
     private int maxHits;
 
 
-    private AsteroidDataRepositoryImpl asteroidDataRepository;
-    private CloseApproachDataRepositoryImpl closeApproachDataRepository;
+    private AsteroidDataRepository asteroidDataRepository;
+    private CloseApproachDataMySQLRepositoryImpl closeApproachDataRepository;
     private NeoWsService neoWsService;
     private LargestAsteroidRepository largestAsteroidRepository;
 
@@ -129,8 +129,8 @@ public class AsteroidDataController {
         }
     }
 
-    protected boolean asteroidExists(AsteroidData asteroid) throws SQLException {
-        return asteroidDataRepository.queryCountOfElement(ASTEROID_DATA_SCHEMA, ASTEROID_DATA_FIELD_NAME, asteroid.getName(), null) != 0;
+    public boolean asteroidExists(AsteroidData asteroid) throws SQLException {
+        return asteroidDataRepository.queryCountOfElement(DatabaseConstants.ASTEROID_DATA_SCHEMA, DatabaseConstants.ASTEROID_DATA_FIELD_NAME, asteroid.getName(), null) != 0;
     }
 
     protected boolean closeApproachDataExists(CloseApproachData closeApproachData) throws SQLException {
@@ -143,18 +143,18 @@ public class AsteroidDataController {
     }
 
     @Autowired
-    public void setCloseApproachDataRepository(CloseApproachDataRepositoryImpl closeApproachDataRepository) {
+    public void setCloseApproachDataRepository(CloseApproachDataMySQLRepositoryImpl closeApproachDataRepository) {
         this.closeApproachDataRepository = closeApproachDataRepository;
     }
+
+    @Autowired
+    public void setLargestAsteroidRepository(LargestDataRepositoryImpl largestAsteroidRepository){
+        this.largestAsteroidRepository = largestAsteroidRepository;
+    }
+
     @Autowired
     public void setNeoWsRepository(NeoWsService neoWsService) {
         this.neoWsService = neoWsService;
     }
-
-    @Autowired
-    public void setLargestAsteroidRepository(LargestAsteroidRepository largestAsteroidRepository){
-        this.largestAsteroidRepository = largestAsteroidRepository;
-    }
-
 
 }

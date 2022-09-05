@@ -4,8 +4,7 @@ import com.gulowsen.asteroidData.models.AsteroidData;
 
 import java.sql.SQLException;
 
-public interface LargestAsteroidRepository {
+public interface LargestAsteroidRepository extends BaseRepository {
     AsteroidData getLargestAsteroidByYear(int year) throws SQLException;
-
     void save(AsteroidData currentLargest, int year) throws SQLException;
 }
