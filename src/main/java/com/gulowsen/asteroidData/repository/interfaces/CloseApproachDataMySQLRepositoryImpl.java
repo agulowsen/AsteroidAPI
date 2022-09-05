@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CloseApproachRepository {
+public interface CloseApproachRepository extends BaseRepository {
 
     int findAmountForDate(LocalDate localDate) throws SQLException;
     int findAmountForDateAndAsteroidId(LocalDate localDate, String asteroidId) throws SQLException;

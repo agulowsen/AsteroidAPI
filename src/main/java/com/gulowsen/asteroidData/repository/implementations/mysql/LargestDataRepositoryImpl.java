@@ -1,7 +1,6 @@
 package com.gulowsen.asteroidData.repository.implementations.mysql;
 
 import com.gulowsen.asteroidData.models.AsteroidData;
-import com.gulowsen.asteroidData.repository.BaseRepository;
 import com.gulowsen.asteroidData.repository.interfaces.LargestAsteroidRepository;
 import com.gulowsen.asteroidData.utils.DBCPDataSource;
 import org.springframework.stereotype.Repository;
@@ -12,8 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
+
 @Repository
-public class LargestDataRepositoryImpl extends BaseRepository implements LargestAsteroidRepository {
+public class LargestDataMySQLRepositoryImpl extends BaseMySQLRepositoryImpl implements LargestAsteroidRepository {
 
     public AsteroidData getLargestAsteroidByYear(int year) throws SQLException {
         AsteroidData asteroidData = new AsteroidData();
