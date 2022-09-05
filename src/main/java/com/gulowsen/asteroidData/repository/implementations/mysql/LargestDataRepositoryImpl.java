@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CREATED_DATETIME;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.LARGEST_ASTEROID_ASTEROID_ID;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.LARGEST_ASTEROID_SCHEMA;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.LARGEST_ASTEROID_YEAR;
 
 @Repository
 public class LargestDataRepositoryImpl extends BaseRepositoryImpl implements LargestAsteroidRepository {

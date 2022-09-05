@@ -10,9 +10,10 @@ import com.gulowsen.asteroidData.models.CloseApproachData;
 import com.gulowsen.asteroidData.models.NearbyRequest;
 import com.gulowsen.asteroidData.models.NearbyResponse;
 import com.gulowsen.asteroidData.repository.implementations.mysql.AsteroidDataRepositoryImpl;
+import com.gulowsen.asteroidData.repository.implementations.mysql.CloseApproachDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.implementations.mysql.LargestDataRepositoryImpl;
 import com.gulowsen.asteroidData.repository.interfaces.AsteroidDataRepository;
-import com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataMySQLRepositoryImpl;
+import com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataRepository;
 import com.gulowsen.asteroidData.repository.interfaces.LargestAsteroidRepository;
 import com.gulowsen.asteroidData.services.NeoWsService;
 import com.gulowsen.asteroidData.utils.DateAndTimeHelper;
@@ -36,7 +37,7 @@ public class AsteroidDataController {
 
 
     private AsteroidDataRepository asteroidDataRepository;
-    private CloseApproachDataMySQLRepositoryImpl closeApproachDataRepository;
+    private CloseApproachDataRepository closeApproachDataRepository;
     private NeoWsService neoWsService;
     private LargestAsteroidRepository largestAsteroidRepository;
 
@@ -143,7 +144,7 @@ public class AsteroidDataController {
     }
 
     @Autowired
-    public void setCloseApproachDataRepository(CloseApproachDataMySQLRepositoryImpl closeApproachDataRepository) {
+    public void setCloseApproachDataRepository(CloseApproachDataRepositoryImpl closeApproachDataRepository) {
         this.closeApproachDataRepository = closeApproachDataRepository;
     }
 

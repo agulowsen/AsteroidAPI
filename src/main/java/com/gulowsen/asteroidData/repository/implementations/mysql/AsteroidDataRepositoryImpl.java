@@ -12,7 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.ASTEROID_DATA_FIELD_ID;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.ASTEROID_DATA_FIELD_MAX_DIAM;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.ASTEROID_DATA_FIELD_MIN_DIAM;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.ASTEROID_DATA_FIELD_NAME;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.ASTEROID_DATA_SCHEMA;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CREATED_DATETIME;
 
 @Repository
 public class AsteroidDataRepositoryImpl extends BaseRepositoryImpl implements AsteroidDataRepository {

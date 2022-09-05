@@ -1,6 +1,7 @@
 package com.gulowsen.asteroidData.repository.implementations.mysql;
 
 import com.gulowsen.asteroidData.models.CloseApproachData;
+import com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataRepository;
 import com.gulowsen.asteroidData.utils.DBCPDataSource;
 import com.gulowsen.asteroidData.utils.DateAndTimeHelper;
 import org.springframework.stereotype.Repository;
@@ -15,10 +16,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.*;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CLOSE_APPROACH_DATA_FIELD_ASTEROID_ID;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CLOSE_APPROACH_DATA_FIELD_DATE;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CLOSE_APPROACH_DATA_FIELD_ID;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CLOSE_APPROACH_DATA_FIELD_MISS_DISTANCE;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CLOSE_APPROACH_DATA_SCHEMA;
+import static com.gulowsen.asteroidData.constants.mysql.DatabaseConstants.CREATED_DATETIME;
 
 @Repository
-public class CloseApproachDataRepositoryImpl extends BaseRepositoryImpl implements com.gulowsen.asteroidData.repository.interfaces.CloseApproachDataMySQLRepositoryImpl {
+public class CloseApproachDataRepositoryImpl extends BaseRepositoryImpl implements CloseApproachDataRepository {
 
     public int findAmountForDate(LocalDate localDate) throws SQLException {
         Integer count = null;
