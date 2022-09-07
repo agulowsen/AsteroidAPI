@@ -12,20 +12,20 @@ public abstract class BaseRepositoryImpl implements BaseRepository {
 
     public int queryCountOfElement(String schema, String clauseField, String stringMatch, Integer integerMatch) throws SQLException {
         Integer count = null;
-        Connection connection = DBCPDataSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM " + schema + " where " +
-                clauseField + " = ?"
-        );
-        if(integerMatch != null) {
-            statement.setInt(1, integerMatch);
-        } else {
-            statement.setString(1, stringMatch);
+        try(Connection connection = DBCPDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM " + schema + " where " +
+                    clauseField + " = ?"
+            );
+            if(integerMatch != null) {
+                statement.setInt(1, integerMatch);
+            } else {
+                statement.setString(1, stringMatch);
+            }
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
         }
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            count = resultSet.getInt(1);
-        }
-        closeDBConnection(connection);
         return count;
     }
 

@@ -21,37 +21,37 @@ public class LargestDataRepositoryImpl extends BaseRepositoryImpl implements Lar
 
     public AsteroidData getLargestAsteroidByYear(int year) throws SQLException {
         AsteroidData asteroidData = new AsteroidData();
-        Connection connection = DBCPDataSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + LARGEST_ASTEROID_SCHEMA + " where " +
-                LARGEST_ASTEROID_YEAR + " = ?"
-        );
-        statement.setInt(1, year);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            asteroidData.setId(resultSet.getString(LARGEST_ASTEROID_ASTEROID_ID));
+        try(Connection connection = DBCPDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + LARGEST_ASTEROID_SCHEMA + " where " +
+                    LARGEST_ASTEROID_YEAR + " = ?"
+            );
+            statement.setInt(1, year);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                asteroidData.setId(resultSet.getString(LARGEST_ASTEROID_ASTEROID_ID));
+            }
         }
-        closeDBConnection(connection);
         return asteroidData;
     }
 
     public void save(AsteroidData currentLargest, int year) throws SQLException {
-        Connection connection = DBCPDataSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO " + LARGEST_ASTEROID_SCHEMA +
-                        " (" + LARGEST_ASTEROID_YEAR + ", " +
-                        LARGEST_ASTEROID_ASTEROID_ID + ", " +
-                        CREATED_DATETIME +
-                         ") " +
-                        " values (?,?,?)" +
-                        " ON DUPLICATE KEY UPDATE " +
-                        LARGEST_ASTEROID_ASTEROID_ID + " = " + "values("+ LARGEST_ASTEROID_ASTEROID_ID +")," +
-                        CREATED_DATETIME + " = " + "values(" + CREATED_DATETIME + ")"
-        );
-        statement.setInt(1, year);
-        statement.setString(2, currentLargest.getId());
-        statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+        try(Connection connection = DBCPDataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO " + LARGEST_ASTEROID_SCHEMA +
+                            " (" + LARGEST_ASTEROID_YEAR + ", " +
+                            LARGEST_ASTEROID_ASTEROID_ID + ", " +
+                            CREATED_DATETIME +
+                            ") " +
+                            " values (?,?,?)" +
+                            " ON DUPLICATE KEY UPDATE " +
+                            LARGEST_ASTEROID_ASTEROID_ID + " = " + "values("+ LARGEST_ASTEROID_ASTEROID_ID +")," +
+                            CREATED_DATETIME + " = " + "values(" + CREATED_DATETIME + ")"
+            );
+            statement.setInt(1, year);
+            statement.setString(2, currentLargest.getId());
+            statement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
-        statement.executeUpdate();
-        closeDBConnection(connection);
+            statement.executeUpdate();
+        }
     }
 }
